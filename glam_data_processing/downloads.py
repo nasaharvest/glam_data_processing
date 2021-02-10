@@ -1130,6 +1130,30 @@ def listAvailable(product:str, start_date:str, format_doy = False) -> list:
 			log.debug(f"Found missing file in valid date range: MOD13Q4N for {latest.strftime('%Y-%m-%d')}")
 			raw_dates.append(latest.strftime("%Y-%m-%d"))
 
+	elif product == "VNP09H1":
+		# get all possible dates
+		if latest is None:
+			latest = datetime.date(datetime.strptime("2012.017","%Y.%j"))
+		while latest < today:
+			oldYear = latest.strftime("%Y")
+			latest = latest + timedelta(days = 8)
+			if latest.strftime("%Y") != oldYear:
+				latest = latest.replace(day=1)
+			log.debug(f"Found missing file in valid date range: VNP09H1 for {latest.strftime('%Y-%m-%d')}")
+			raw_dates.append(latest.strftime("%Y-%m-%d"))
+
+	elif product == "MOD09A1":
+		# get all possible dates
+		if latest is None:
+			latest = datetime.date(datetime.strptime("2000.049","%Y.%j"))
+		while latest < today:
+			oldYear = latest.strftime("%Y")
+			latest = latest + timedelta(days = 8)
+			if latest.strftime("%Y") != oldYear:
+				latest = latest.replace(day=1)
+			log.debug(f"Found missing file in valid date range: MOD09A1 for {latest.strftime('%Y-%m-%d')}")
+			raw_dates.append(latest.strftime("%Y-%m-%d"))
+
 	else:
 		raise BadInputError(f"Product '{product}' not recognized")
 
